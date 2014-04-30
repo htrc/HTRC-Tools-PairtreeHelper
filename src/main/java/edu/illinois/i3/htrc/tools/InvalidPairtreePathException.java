@@ -1,6 +1,8 @@
 package edu.illinois.i3.htrc.tools;
 
-public class InvalidPairtreePathException extends Exception {
+import java.io.IOException;
+
+public class InvalidPairtreePathException extends IOException {
 
     public InvalidPairtreePathException(String message) {
         super(message);

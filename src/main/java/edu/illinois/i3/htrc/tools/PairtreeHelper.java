@@ -69,6 +69,46 @@ public class PairtreeHelper {
     }
 
     /**
+     * Constructs the pairtree path associated with the given HTRC clean id
+     *
+     * @param htrcCleanId The HTRC clean id
+     * @return The pairtree path
+     * @throws InvalidHtrcIdException Thrown if the given id is not a valid HTRC clean id
+     */
+    public static String getPathFromCleanId(String htrcCleanId) throws InvalidHtrcIdException {
+        int index = htrcCleanId.indexOf('.');
+        if (index == -1)
+            throw new InvalidHtrcIdException(String.format("%s is not a valid HTRC clean id", htrcCleanId));
+
+        String libId = htrcCleanId.substring(0, index);
+        String cleanId = htrcCleanId.substring(index + 1);
+        String uncleanId = pairtree.uncleanId(cleanId);
+        String ppath = pairtree.mapToPPath(uncleanId);
+
+        return String.format("%s/pairtree_root/%s/%s/", libId, ppath, cleanId);
+    }
+
+    /**
+     * Constructs the pairtree path associated with the given HTRC unclean id
+     *
+     * @param htrcUncleanId The HTRC unclean id
+     * @return The pairtree path
+     * @throws InvalidHtrcIdException Thrown if the given id is not a valid HTRC unclean id
+     */
+    public static String getPathFromUncleanId(String htrcUncleanId) throws InvalidHtrcIdException {
+        int index = htrcUncleanId.indexOf('.');
+        if (index == -1)
+            throw new InvalidHtrcIdException(String.format("%s is not a valid HTRC unclean id", htrcUncleanId));
+
+        String libId = htrcUncleanId.substring(0, index);
+        String uncleanId = htrcUncleanId.substring(index + 1);
+        String cleanId = pairtree.cleanId(uncleanId);
+        String ppath = pairtree.mapToPPath(uncleanId);
+
+        return String.format("%s/pairtree_root/%s/%s/", libId, ppath, cleanId);
+    }
+
+    /**
      * A class representing an HTRC pairtree document
      */
     public static class PairtreeDocument {
@@ -150,6 +190,26 @@ public class PairtreeHelper {
         public String getPpath() {
             return _ppath;
         }
+
+        @Override
+        public boolean equals(Object other) {
+            if (this == other) return true;
+            if (other == null || !(other instanceof PairtreeDocument)) return false;
+
+            PairtreeDocument document = (PairtreeDocument) other;
+            return _cleanId.equals(document._cleanId);
+        }
+
+        @Override
+        public int hashCode() {
+            return _cleanId.hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return String.format("%s(uncleanId: %s, cleanId: %s, doc: %s)",
+                    getClass().getSimpleName(), _uncleanId, _cleanId, _documentPath);
+        }
     }
 
     public static void main(String[] args) {
@@ -204,7 +264,7 @@ public class PairtreeHelper {
 
             System.out.println(String.format("%s %s %s %s", uncleanId, cleanId, libraryId, name));
         }
-        catch (InvalidPairtreePathException | IOException e) {
+        catch (IOException e) {
             System.err.println(e.getMessage());
             System.exit(1);
         }
