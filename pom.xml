@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.illinois.i3.htrc.tools</groupId>
     <artifactId>htrc-pairtree-helper</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.3</version>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -137,9 +137,9 @@
     </ciManagement>
 
     <scm>
-        <connection>scm:svn:${public.svn.root}/HTRC-Tools-PairtreeHelper/trunk</connection>
-        <developerConnection>scm:svn:${developer.svn.root}/HTRC-Tools-PairtreeHelper/trunk</developerConnection>
-        <url>${fisheye.svn.root}/HTRC-Tools-PairtreeHelper/trunk</url>
+        <connection>scm:svn:svn+ssh://svn.code.sf.net/p/htrc/code/HTRC-Tools-PairtreeHelper/tags/1.3</connection>
+        <developerConnection>scm:svn:svn+ssh://svn.code.sf.net/p/htrc/code/HTRC-Tools-PairtreeHelper/tags/1.3</developerConnection>
+        <url>scm:svn:svn+ssh://svn.code.sf.net/p/htrc/code/HTRC-Tools-PairtreeHelper/tags/1.3</url>
     </scm>
 
     <repositories>
