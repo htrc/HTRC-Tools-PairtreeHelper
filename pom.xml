@@ -26,32 +26,12 @@
         <github.global.server>github</github.global.server>
         <public.code.repo>https://github.com/htrc</public.code.repo>
         <developer.code.repo>https://github.com/htrc</developer.code.repo>
+        <github.repo.name>${project.name}</github.repo.name>
         <fisheye.changelog.root>http://fisheye.htrc.illinois.edu/changelog</fisheye.changelog.root>
     </properties>
 
     <!-- Build Settings -->
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>com.github.github</groupId>
-                    <artifactId>site-maven-plugin</artifactId>
-                    <version>0.11</version>
-                    <configuration>
-                        <message>Creating site for ${project.artifactId}-${project.version}</message>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>site</goal>
-                            </goals>
-                            <phase>site</phase>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -73,6 +53,26 @@
                         <version>1.9.2</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.11</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>site</phase>
+                        <configuration>
+                            <message>Creating site for ${project.artifactId}-${project.version}</message>
+                            <!-- repository identification -->
+                            <repositoryName>${github.repo.name}</repositoryName>
+                            <repositoryOwner>htrc</repositoryOwner>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -127,7 +127,7 @@
     <!-- Project Information -->
     <name>HTRC-Tools-PairtreeHelper</name>
     <description>Parses HTRC pairtree paths into clean and unclean ids</description>
-    <url>http://wiki.htrc.illinois.edu/display/DEV/HTRC-Tools-PairtreeHelper</url>
+    <url>https://github.com/htrc/${github.repo.name}</url>
 
     <organization>
         <name>HathiTrust Research Center</name>
@@ -146,11 +146,11 @@
     </ciManagement>
 
     <scm>
-        <connection>scm:git:${public.code.repo}/HTRC-Tools-PairtreeHelper.git</connection>
-        <developerConnection>scm:git:${developer.code.repo}/HTRC-Tools-PairtreeHelper.git</developerConnection>
-        <url>${fisheye.changelog.root}/HTRC-Tools-PairtreeHelper</url>
-      <tag>HEAD</tag>
-  </scm>
+        <connection>scm:git:${public.code.repo}/${github.repo.name}.git</connection>
+        <developerConnection>scm:git:${developer.code.repo}/${github.repo.name}.git</developerConnection>
+        <url>${fisheye.changelog.root}/${github.repo.name}</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <repositories>
         <repository>
