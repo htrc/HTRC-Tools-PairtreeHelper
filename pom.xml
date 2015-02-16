@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.illinois.i3.htrc.tools</groupId>
     <artifactId>htrc-pairtree-helper</artifactId>
-    <version>1.5</version>
+    <version>1.6-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -149,7 +149,7 @@
         <connection>scm:git:${public.code.repo}/HTRC-Tools-PairtreeHelper.git</connection>
         <developerConnection>scm:git:${developer.code.repo}/HTRC-Tools-PairtreeHelper.git</developerConnection>
         <url>${fisheye.changelog.root}/HTRC-Tools-PairtreeHelper</url>
-      <tag>htrc-pairtree-helper-1.5</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <repositories>
