@@ -4,6 +4,7 @@ import gov.loc.repository.pairtree.Pairtree;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -111,7 +112,7 @@ public class PairtreeHelper {
     /**
      * A class representing an HTRC pairtree document
      */
-    public static class PairtreeDocument {
+    public static class PairtreeDocument implements Serializable {
         private final String _documentPath;
         private final String _libraryId;
         private final String _cleanId;
