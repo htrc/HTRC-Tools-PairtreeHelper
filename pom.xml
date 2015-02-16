@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.illinois.i3.htrc.tools</groupId>
     <artifactId>htrc-pairtree-helper</artifactId>
-    <version>1.4-SNAPSHOT</version>
+    <version>1.5-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -23,9 +23,10 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <public.svn.root>svn://svn.code.sf.net/p/htrc/code</public.svn.root>
-        <developer.svn.root>svn+ssh://svn.code.sf.net/p/htrc/code</developer.svn.root>
-        <fisheye.svn.root>http://fisheye.htrc.illinois.edu/changelog</fisheye.svn.root>
+        <github.global.server>github</github.global.server>
+        <public.code.repo>https://github.com/htrc</public.code.repo>
+        <developer.code.repo>https://github.com/htrc</developer.code.repo>
+        <fisheye.changelog.root>http://fisheye.htrc.illinois.edu/changelog</fisheye.changelog.root>
     </properties>
 
     <!-- Build Settings -->
@@ -33,16 +34,20 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <version>3.3</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.apache.maven.wagon</groupId>
-                            <artifactId>wagon-ssh</artifactId>
-                            <version>2.6</version>
-                        </dependency>
-                    </dependencies>
+                    <groupId>com.github.github</groupId>
+                    <artifactId>site-maven-plugin</artifactId>
+                    <version>0.11</version>
+                    <configuration>
+                        <message>Creating site for ${project.artifactId}-${project.version}</message>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>site</goal>
+                            </goals>
+                            <phase>site</phase>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -51,7 +56,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.0</version>
+                <version>3.2</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
@@ -60,24 +65,20 @@
 
             <plugin>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.4</version>
+                <version>2.5.1</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.apache.maven.scm</groupId>
-                        <artifactId>maven-scm-provider-svnexe</artifactId>
-                        <version>1.8.1</version>
+                        <artifactId>maven-scm-provider-gitexe</artifactId>
+                        <version>1.9.2</version>
                     </dependency>
                 </dependencies>
-                <configuration>
-                    <tagBase>${developer.svn.root}/HTRC-Tools-PairtreeHelper/tags</tagBase>
-                    <useReleaseProfile>false</useReleaseProfile>
-                </configuration>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.2</version>
+                <version>2.3</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -105,12 +106,20 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>2.7</version>
+                <version>2.8</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
+                <version>2.10.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-changes-plugin</artifactId>
+                <version>2.11</version>
+                <configuration>
+                    <useJql>true</useJql>
+                </configuration>
             </plugin>
         </plugins>
     </reporting>
@@ -137,9 +146,9 @@
     </ciManagement>
 
     <scm>
-        <connection>scm:svn:${public.svn.root}/HTRC-Tools-PairtreeHelper/trunk</connection>
-        <developerConnection>scm:svn:${developer.svn.root}/HTRC-Tools-PairtreeHelper/trunk</developerConnection>
-        <url>${fisheye.svn.root}/HTRC-Tools-PairtreeHelper/trunk</url>
+        <connection>scm:git:${public.code.repo}/HTRC-Tools-PairtreeHelper.git</connection>
+        <developerConnection>scm:git:${developer.code.repo}/HTRC-Tools-PairtreeHelper.git</developerConnection>
+        <url>${fisheye.changelog.root}/HTRC-Tools-PairtreeHelper</url>
     </scm>
 
     <repositories>
@@ -170,10 +179,5 @@
             <name>HTRC Snapshot Repository</name>
             <url>http://htrc.illinois.edu/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
-
-        <site>
-            <id>htrc.sf.net</id>
-            <url>sftp://web.sourceforge.net/home/project-web/htrc/htdocs/${project.name}</url>
-        </site>
     </distributionManagement>
 </project>
