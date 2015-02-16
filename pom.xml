@@ -127,7 +127,7 @@
     <!-- Project Information -->
     <name>HTRC-Tools-PairtreeHelper</name>
     <description>Parses HTRC pairtree paths into clean and unclean ids</description>
-    <url>https://github.com/htrc/${github.repo.name}</url>
+    <url>https://htrc.github.io/${github.repo.name}</url>
 
     <organization>
         <name>HathiTrust Research Center</name>
