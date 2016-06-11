@@ -18,11 +18,17 @@ Usage: PairtreeHelper [options] [command] [command options]
     clean2pt      Constructs the pairtree path associated with the given HTRC clean ids
       Usage: clean2pt [options] <list-of-htrc-clean-ids>
 
+    clean2root      Constructs the pairtree root folder for the documents associated with the given HTRC clean ids
+      Usage: clean2root [options] <list-of-htrc-clean-ids>
+
     unclean2pt      Constructs the pairtree path associated with the given HTRC (unclean) ids
       Usage: unclean2pt [options] <list-of-htrc-unclean-ids>
 
+    unclean2root      Constructs the pairtree root folder for the documents associated with the given HTRC (unclean) ids
+      Usage: unclean2root [options] <list-of-htrc-unclean-ids>
+
     parse      Parses a pairtree path and reports the components of the path
-      Usage: parse [options] <pairtree-path>
+      Usage: parse [options] <pairtree-paths>
         Options:
           --header
              Specifies whether a header is included in the output (useful for
