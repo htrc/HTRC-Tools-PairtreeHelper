@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 public class PairtreeHelper {
     protected static final Pairtree pairtree = new Pairtree();
     protected static final Pattern PairtreeFilePartsRegex =
-            Pattern.compile("(?<libid>[^/]+)/pairtree_root/(?<ppath>.+)/(?<cleanid>[^/]+)\\.[^.]+$");
+            Pattern.compile("(?<libid>[^/]+)/pairtree_root/(?<ppath>.+)/(?<cleanid>[^/]+)/[^/]+$");
 
     /**
      * Parses an HTRC pairtree file path into a {@link PairtreeDocument} that can be used
@@ -30,12 +30,12 @@ public class PairtreeHelper {
         if (!pairtreeFilePartsMatcher.find())
             throw new InvalidPairtreePathException(String.format("%s is not a valid HTRC pairtree file path", filePath));
 
-        String libraryId = pairtreeFilePartsMatcher.group("libid");
+        String libId = pairtreeFilePartsMatcher.group("libid");
         String ppath = pairtreeFilePartsMatcher.group("ppath");
         String cleanId = pairtreeFilePartsMatcher.group("cleanid");
         String uncleanId = pairtree.uncleanId(cleanId);
 
-        return new PairtreeDocument(filePath, libraryId, uncleanId, cleanId, ppath);
+        return new PairtreeDocument(libId, uncleanId, cleanId, ppath);
     }
 
     /**
@@ -77,10 +77,10 @@ public class PairtreeHelper {
      * Constructs the pairtree path associated with the given HTRC clean id
      *
      * @param htrcCleanId The HTRC clean id
-     * @return The pairtree path
+     * @return The {@link PairtreeDocument}
      * @throws InvalidHtrcIdException Thrown if the given id is not a valid HTRC clean id
      */
-    public static String getPathFromCleanId(String htrcCleanId) throws InvalidHtrcIdException {
+    public static PairtreeDocument getDocFromCleanId(String htrcCleanId) throws InvalidHtrcIdException {
         int index = htrcCleanId.indexOf('.');
         if (index == -1)
             throw new InvalidHtrcIdException(String.format("%s is not a valid HTRC clean id", htrcCleanId));
@@ -90,17 +90,17 @@ public class PairtreeHelper {
         String uncleanId = pairtree.uncleanId(cleanId);
         String ppath = pairtree.mapToPPath(uncleanId);
 
-        return String.format("%s/pairtree_root/%s/%s/", libId, ppath, cleanId);
+        return new PairtreeDocument(libId, uncleanId, cleanId, ppath);
     }
 
     /**
      * Constructs the pairtree path associated with the given HTRC unclean id
      *
      * @param htrcUncleanId The HTRC unclean id
-     * @return The pairtree path
+     * @return The {@link PairtreeDocument}
      * @throws InvalidHtrcIdException Thrown if the given id is not a valid HTRC unclean id
      */
-    public static String getPathFromUncleanId(String htrcUncleanId) throws InvalidHtrcIdException {
+    public static PairtreeDocument getDocFromUncleanId(String htrcUncleanId) throws InvalidHtrcIdException {
         int index = htrcUncleanId.indexOf('.');
         if (index == -1)
             throw new InvalidHtrcIdException(String.format("%s is not a valid HTRC unclean id", htrcUncleanId));
@@ -110,35 +110,48 @@ public class PairtreeHelper {
         String cleanId = pairtree.cleanId(uncleanId);
         String ppath = pairtree.mapToPPath(uncleanId);
 
-        return String.format("%s/pairtree_root/%s/%s/", libId, ppath, cleanId);
+        return new PairtreeDocument(libId, uncleanId, cleanId, ppath);
     }
 
     /**
      * A class representing an HTRC pairtree document
      */
     public static class PairtreeDocument implements Serializable {
-        private final String _documentPath;
-        private final String _libraryId;
+        private final String _libId;
         private final String _cleanId;
         private final String _uncleanId;
         private final String _ppath;
+        private final String _docRootPath;
+        private final String _docPathPrefix;
 
-        private PairtreeDocument(String documentPath, String source, String uncleanId, String cleanId, String ppath) {
-            _documentPath = documentPath;
-            _libraryId = source;
+        private PairtreeDocument(String source, String uncleanId, String cleanId, String ppath) {
+            _libId = source;
             _uncleanId = uncleanId;
             _cleanId = cleanId;
             _ppath = ppath;
+            _docRootPath = String.format("%s/pairtree_root/%s/%s", _libId, _ppath, _cleanId);
+            _docPathPrefix = String.format("%s/%s", _docRootPath, _cleanId);
         }
 
         /**
-         * Returns the document path for this pairtree document
+         * Returns the document path prefix for this pairtree document; for example,
+         * a volume with ID mdp.39015063051745 would generate the document path prefix
+         * mdp/pairtree_root/39/01/50/63/05/17/45/39015063051745/39015063051745
+         * By appending ".zip" or ".mets.xml" to this path you can point to the pairtree volume ZIP
+         * or the volume METS metadata file, as desired.
          *
          * @return The document path
          */
-        public String getDocumentPath() {
-            return _documentPath;
+        public String getDocumentPathPrefix() {
+            return _docPathPrefix;
         }
+
+        /**
+         * Returns the root folder for the document
+         *
+         * @return The document folder path
+         */
+        public String getDocumentRootPath() { return _docRootPath; }
 
         /**
          * Returns the library identifier for the source library that provided this document
@@ -146,7 +159,7 @@ public class PairtreeHelper {
          * @return The source library id
          */
         public String getLibraryId() {
-            return _libraryId;
+            return _libId;
         }
 
         /**
@@ -156,7 +169,7 @@ public class PairtreeHelper {
          * @return The HTRC clean id
          */
         public String getCleanId() {
-            return String.format("%s.%s", _libraryId, _cleanId);
+            return String.format("%s.%s", _libId, _cleanId);
         }
 
         /**
@@ -175,7 +188,7 @@ public class PairtreeHelper {
          * @return The HTRC unclean id
          */
         public String getUncleanId() {
-            return String.format("%s.%s", _libraryId, _uncleanId);
+            return String.format("%s.%s", _libId, _uncleanId);
         }
 
         /**
@@ -212,8 +225,8 @@ public class PairtreeHelper {
 
         @Override
         public String toString() {
-            return String.format("%s(uncleanId: %s, cleanId: %s, doc: %s)",
-                    getClass().getSimpleName(), _uncleanId, _cleanId, _documentPath);
+            return String.format("%s(uncleanId: %s, cleanId: %s, docPrefix: %s)",
+                    getClass().getSimpleName(), _uncleanId, _cleanId, _docPathPrefix);
         }
     }
 
@@ -227,7 +240,9 @@ public class PairtreeHelper {
         commander.addCommand("clean", commands.cmdCleanId);
         commander.addCommand("unclean", commands.cmdUncleanId);
         commander.addCommand("clean2pt", commands.cmdGetPathFromCleanId);
+        commander.addCommand("clean2root", commands.cmdGetRootDocFromCleanId);
         commander.addCommand("unclean2pt", commands.cmdGetPathFromUncleanId);
+        commander.addCommand("unclean2root", commands.cmdGetRootDocFromUncleanId);
         commander.addCommand("parse", commands.cmdParse);
 
         if (args.length == 0)
@@ -300,7 +315,27 @@ public class PairtreeHelper {
             }
             for (String cleanId : cleanIds) {
                 try {
-                    System.out.println(getPathFromCleanId(cleanId));
+                    System.out.println(getDocFromCleanId(cleanId).getDocumentPathPrefix());
+                }
+                catch (InvalidHtrcIdException e) {
+                    System.err.println("Invalid HTRC id: " + cleanId);
+                }
+            }
+        }
+
+        else
+
+        if ("clean2root".equalsIgnoreCase(command)) {
+            List<String> cleanIds = commands.cmdGetRootDocFromCleanId.cleanIds;
+            if (cleanIds == null) {
+                cleanIds = new ArrayList<>();
+                Scanner scanner = new Scanner(System.in);
+                while (scanner.hasNext())
+                    cleanIds.add(scanner.next());
+            }
+            for (String cleanId : cleanIds) {
+                try {
+                    System.out.println(getDocFromCleanId(cleanId).getDocumentRootPath());
                 }
                 catch (InvalidHtrcIdException e) {
                     System.err.println("Invalid HTRC id: " + cleanId);
@@ -320,7 +355,27 @@ public class PairtreeHelper {
             }
             for (String uncleanId : uncleanIds) {
                 try {
-                    System.out.println(getPathFromUncleanId(uncleanId));
+                    System.out.println(getDocFromUncleanId(uncleanId).getDocumentPathPrefix());
+                }
+                catch (InvalidHtrcIdException e) {
+                    System.err.println("Invalid HTRC id: " + uncleanId);
+                }
+            }
+        }
+
+        else
+
+        if ("unclean2root".equalsIgnoreCase(command)) {
+            List<String> uncleanIds = commands.cmdGetRootDocFromUncleanId.uncleanIds;
+            if (uncleanIds == null) {
+                uncleanIds = new ArrayList<>();
+                Scanner scanner = new Scanner(System.in);
+                while (scanner.hasNext())
+                    uncleanIds.add(scanner.next());
+            }
+            for (String uncleanId : uncleanIds) {
+                try {
+                    System.out.println(getDocFromUncleanId(uncleanId).getDocumentRootPath());
                 }
                 catch (InvalidHtrcIdException e) {
                     System.err.println("Invalid HTRC id: " + uncleanId);
@@ -368,7 +423,9 @@ public class PairtreeHelper {
         public final CommandCleanId cmdCleanId = new CommandCleanId();
         public final CommandUncleanId cmdUncleanId = new CommandUncleanId();
         public final CommandGetPathFromCleanId cmdGetPathFromCleanId = new CommandGetPathFromCleanId();
+        public final CommandGetRootDocFromCleanId cmdGetRootDocFromCleanId = new CommandGetRootDocFromCleanId();
         public final CommandGetPathFromUncleanId cmdGetPathFromUncleanId = new CommandGetPathFromUncleanId();
+        public final CommandGetRootDocFromUncleanId cmdGetRootDocFromUncleanId = new CommandGetRootDocFromUncleanId();
         public final CommandParse cmdParse = new CommandParse();
     }
 
@@ -390,8 +447,20 @@ public class PairtreeHelper {
         private List<String> cleanIds;
     }
 
+    @Parameters(commandDescription = "Constructs the pairtree root folder for the documents associated with the given HTRC clean ids")
+    public static class CommandGetRootDocFromCleanId {
+        @Parameter(description = "<list-of-htrc-clean-ids>")
+        private List<String> cleanIds;
+    }
+
     @Parameters(commandDescription = "Constructs the pairtree path associated with the given HTRC (unclean) ids")
     public static class CommandGetPathFromUncleanId {
+        @Parameter(description = "<list-of-htrc-unclean-ids>")
+        private List<String> uncleanIds;
+    }
+
+    @Parameters(commandDescription = "Constructs the pairtree root folder for the documents associated with the given HTRC (unclean) ids")
+    public static class CommandGetRootDocFromUncleanId {
         @Parameter(description = "<list-of-htrc-unclean-ids>")
         private List<String> uncleanIds;
     }
