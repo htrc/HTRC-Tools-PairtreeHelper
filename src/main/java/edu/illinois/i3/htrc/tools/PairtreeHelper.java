@@ -74,7 +74,8 @@ public class PairtreeHelper {
     }
 
     /**
-     * Constructs the pairtree path associated with the given HTRC clean id
+     * Converts the given HTRC clean id into a {@link PairtreeDocument} that can be used
+     * to extract metadata about the document
      *
      * @param htrcCleanId The HTRC clean id
      * @return The {@link PairtreeDocument}
@@ -94,7 +95,8 @@ public class PairtreeHelper {
     }
 
     /**
-     * Constructs the pairtree path associated with the given HTRC unclean id
+     * Converts the given HTRC unclean id into a {@link PairtreeDocument} that can be used
+     * to extract metadata about the document
      *
      * @param htrcUncleanId The HTRC unclean id
      * @return The {@link PairtreeDocument}
