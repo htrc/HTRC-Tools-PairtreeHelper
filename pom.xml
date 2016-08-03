@@ -131,7 +131,7 @@
 
     <!-- Project Information -->
     <name>HTRC-Tools-PairtreeHelper</name>
-    <description>Parses HTRC pairtree paths into clean and unclean ids</description>
+    <description>Provides various APIs for managing HT IDs and the Pairtree structure</description>
     <url>https://htrc.github.io/${github.repo.name}</url>
 
     <organization>
