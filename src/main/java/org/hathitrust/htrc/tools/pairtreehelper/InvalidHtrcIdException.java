@@ -1,4 +1,4 @@
-package edu.illinois.i3.htrc.tools;
+package org.hathitrust.htrc.tools.pairtreehelper;
 
 public class InvalidHtrcIdException extends Exception {
     public InvalidHtrcIdException() {
