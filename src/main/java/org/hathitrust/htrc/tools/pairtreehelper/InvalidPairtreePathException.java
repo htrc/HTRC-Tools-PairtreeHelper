@@ -1,4 +1,4 @@
-package edu.illinois.i3.htrc.tools;
+package org.hathitrust.htrc.tools.pairtreehelper;
 
 import java.io.IOException;
 
