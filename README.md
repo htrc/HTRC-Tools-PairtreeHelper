@@ -1,5 +1,5 @@
 # HTRC-Tools-PairtreeHelper
-This is a Java library that provides various APIs for managing HT IDs and the Pairtree structure.
+Java tool and library that provides various APIs for managing HT IDs and the Pairtree structure.
 
 # Build
 
