@@ -54,12 +54,12 @@ To use via Maven:
 <dependency>
     <groupId>org.hathitrust.htrc</groupId>
     <artifactId>pairtree-helper</artifactId>
-    <version>3.1-SNAPSHOT</version>
+    <version>3.1</version>
 </dependency>
 ```
 
 To use via SBT:  
-`libraryDependencies += "org.hathitrust.htrc" % "pairtree-helper" % "3.1-SNAPSHOT"`
+`libraryDependencies += "org.hathitrust.htrc" % "pairtree-helper" % "3.1"`
 
 ## PairtreeHelper API
 ```
@@ -138,11 +138,57 @@ public static PairtreeDocument getDocFromUncleanId(String htrcUncleanId) throws 
 public String getDocumentPathPrefix()
 
 /**
+ * Convenience method for retrieving the full document path prefix.
+ *
+ * @param pairtreeRoot The path to the pairtree root
+ * @return The full document path prefix
+ */
+public String getDocumentPathPrefix(String pairtreeRoot)
+
+/**
+ * Convenience method for quickly getting the path to the ZIP file.
+ *
+ * @return The relative path to the ZIP file
+ */
+public String getZipPath()
+
+/**
+ * Convenience method for retrieving the full ZIP volume path prefix.
+ *
+ * @param pairtreeRoot The path to the pairtree root
+ * @return The full ZIP volume path prefix
+ */
+public String getZipPath(String pairtreeRoot)
+
+/**
+ * Convenience method for quickly getting the path to the METS XML file.
+ *
+ * @return The relative path to the METS XML file
+ */
+public String getMetsPath()
+
+/**
+ * Convenience method for retrieving the full METS XML path prefix.
+ *
+ * @param pairtreeRoot The path to the pairtree root
+ * @return The full METS XML path prefix
+ */
+public String getMetsPath(String pairtreeRoot)
+
+/**
  * Returns the root folder for the document
  *
  * @return The document folder path
  */
 public String getDocumentRootPath()
+
+/**
+ * Convenience method for retrieving the full document root path prefix.
+ *
+ * @param pairtreeRoot The path to the pairtree root
+ * @return The full document root path prefix
+ */
+public String getDocumentRootPath(String pairtreeRoot)
 
 /**
  * Returns the library identifier for the source library that provided this document
