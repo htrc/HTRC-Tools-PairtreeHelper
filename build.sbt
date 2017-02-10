@@ -36,7 +36,6 @@ lazy val `pairtree-helper` = (project in file(".")).
   settings(commonSettings: _*).
   settings(
     name := "pairtree-helper",
-    version := "3.1-SNAPSHOT",
     description := "Java tool and library that provides various APIs for managing HT IDs " +
       "and the Pairtree structure.",
     licenses += "Apache2" -> url("http://www.apache.org/licenses/LICENSE-2.0"),

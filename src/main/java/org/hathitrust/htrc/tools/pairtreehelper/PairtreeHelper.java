@@ -145,11 +145,65 @@ public class PairtreeHelper {
         }
 
         /**
+         * Convenience method for retrieving the full document path prefix.
+         *
+         * @param pairtreeRoot The path to the pairtree root
+         * @return The full document path prefix
+         */
+        public String getDocumentPathPrefix(String pairtreeRoot) {
+            return new File(pairtreeRoot, getDocumentPathPrefix()).toString();
+        }
+
+        /**
+         * Convenience method for quickly getting the path to the ZIP file.
+         *
+         * @return The relative path to the ZIP file
+         */
+        public String getZipPath() { return String.format("%s.zip", getDocumentPathPrefix()); }
+
+        /**
+         * Convenience method for retrieving the full ZIP volume path prefix.
+         *
+         * @param pairtreeRoot The path to the pairtree root
+         * @return The full ZIP volume path prefix
+         */
+        public String getZipPath(String pairtreeRoot) {
+            return new File(pairtreeRoot, getZipPath()).toString();
+        }
+
+        /**
+         * Convenience method for quickly getting the path to the METS XML file.
+         *
+         * @return The relative path to the METS XML file
+         */
+        public String getMetsPath() { return String.format("%s.mets.xml", getDocumentPathPrefix()); }
+
+        /**
+         * Convenience method for retrieving the full METS XML path prefix.
+         *
+         * @param pairtreeRoot The path to the pairtree root
+         * @return The full METS XML path prefix
+         */
+        public String getMetsPath(String pairtreeRoot) {
+            return new File(pairtreeRoot, getMetsPath()).toString();
+        }
+
+        /**
          * Returns the root folder for the document
          *
          * @return The document folder path
          */
         public String getDocumentRootPath() { return _docRootPath; }
+
+        /**
+         * Convenience method for retrieving the full document root path prefix.
+         *
+         * @param pairtreeRoot The path to the pairtree root
+         * @return The full document root path prefix
+         */
+        public String getDocumentRootPath(String pairtreeRoot) {
+            return new File(pairtreeRoot, getDocumentRootPath()).toString();
+        }
 
         /**
          * Returns the library identifier for the source library that provided this document
