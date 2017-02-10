@@ -69,6 +69,14 @@ public class PairtreeHelperTest {
     }
 
     @Test
+    public void testGetFullRootPathFromCleanId() throws Exception {
+        String cleanId = "uc2.ark+=13960=t4qj7970f";
+        String pairtreeRoot = "/pairtree/root";
+        PairtreeHelper.PairtreeDocument doc = PairtreeHelper.getDocFromCleanId(cleanId);
+        assertEquals("/pairtree/root/uc2/pairtree_root/ar/k+/=1/39/60/=t/4q/j7/97/0f/ark+=13960=t4qj7970f", doc.getDocumentRootPath(pairtreeRoot));
+    }
+
+    @Test
     public void testGetPathFromUncleanId() throws Exception {
         String uncleanId = "uc2.ark:/13960/t4qj7970f";
         PairtreeHelper.PairtreeDocument doc = PairtreeHelper.getDocFromUncleanId(uncleanId);
@@ -92,5 +100,35 @@ public class PairtreeHelperTest {
     public void testGetPathFromUncleanIdWithWrongId() throws Exception {
         String uncleanId = "ark:/13960/t4qj7970f";
         PairtreeHelper.getDocFromUncleanId(uncleanId);
+    }
+
+    @Test
+    public void testGetZipPath() throws Exception {
+        String uncleanId = "uc2.ark:/13960/t4qj7970f";
+        PairtreeHelper.PairtreeDocument doc = PairtreeHelper.getDocFromUncleanId(uncleanId);
+        assertEquals("uc2/pairtree_root/ar/k+/=1/39/60/=t/4q/j7/97/0f/ark+=13960=t4qj7970f/ark+=13960=t4qj7970f.zip", doc.getZipPath());
+    }
+
+    @Test
+    public void testGetFullZipPath() throws Exception {
+        String uncleanId = "uc2.ark:/13960/t4qj7970f";
+        String pairtreeRoot = "/pairtree/root";
+        PairtreeHelper.PairtreeDocument doc = PairtreeHelper.getDocFromUncleanId(uncleanId);
+        assertEquals("/pairtree/root/uc2/pairtree_root/ar/k+/=1/39/60/=t/4q/j7/97/0f/ark+=13960=t4qj7970f/ark+=13960=t4qj7970f.zip", doc.getZipPath(pairtreeRoot));
+    }
+
+    @Test
+    public void testGetMetsPath() throws Exception {
+        String uncleanId = "uc2.ark:/13960/t4qj7970f";
+        PairtreeHelper.PairtreeDocument doc = PairtreeHelper.getDocFromUncleanId(uncleanId);
+        assertEquals("uc2/pairtree_root/ar/k+/=1/39/60/=t/4q/j7/97/0f/ark+=13960=t4qj7970f/ark+=13960=t4qj7970f.mets.xml", doc.getMetsPath());
+    }
+
+    @Test
+    public void testGetFullMetsPath() throws Exception {
+        String uncleanId = "uc2.ark:/13960/t4qj7970f";
+        String pairtreeRoot = "/pairtree/root";
+        PairtreeHelper.PairtreeDocument doc = PairtreeHelper.getDocFromUncleanId(uncleanId);
+        assertEquals("/pairtree/root/uc2/pairtree_root/ar/k+/=1/39/60/=t/4q/j7/97/0f/ark+=13960=t4qj7970f/ark+=13960=t4qj7970f.mets.xml", doc.getMetsPath(pairtreeRoot));
     }
 }
