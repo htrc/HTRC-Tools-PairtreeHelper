@@ -54,12 +54,12 @@ To use via Maven:
 <dependency>
     <groupId>org.hathitrust.htrc</groupId>
     <artifactId>pairtree-helper</artifactId>
-    <version>3.1</version>
+    <version>3.2-SNAPSHOT</version>
 </dependency>
 ```
 
 To use via SBT:  
-`libraryDependencies += "org.hathitrust.htrc" % "pairtree-helper" % "3.1"`
+`libraryDependencies += "org.hathitrust.htrc" % "pairtree-helper" % "3.2-SNAPSHOT"`
 
 ## PairtreeHelper API
 ```
