@@ -8,15 +8,16 @@ lazy val commonSettings = Seq(
   organization := "org.hathitrust.htrc",
   organizationName := "HathiTrust Research Center",
   organizationHomepage := Some(url("https://www.hathitrust.org/htrc")),
+  scalaVersion := "2.12.2",
   javacOptions in (Compile) ++= Seq("-source", "1.7"),
   javacOptions in (Compile, compile) ++= Seq("-target", "1.7"),
   resolvers ++= Seq(
     "I3 Repository" at "http://nexus.htrc.illinois.edu/content/groups/public",
     Resolver.mavenLocal
   ),
-  publishTo <<= isSnapshot { (isSnapshot: Boolean) =>
+  publishTo := {
     val nexus = "https://nexus.htrc.illinois.edu/"
-    if (isSnapshot)
+    if (isSnapshot.value)
       Some("HTRC Snapshots Repository" at nexus + "content/repositories/snapshots")
     else
       Some("HTRC Releases Repository"  at nexus + "content/repositories/releases")
@@ -43,5 +44,6 @@ lazy val `pairtree-helper` = (project in file(".")).
       "gov.loc"                     % "pairtree"              % "1.1.2",
       "com.beust"                   % "jcommander"            % "1.48",
       "junit"                       % "junit"                 % "4.11"        % Test
-    )
+    ),
+    crossScalaVersions := Seq("2.12.2", "2.11.11")
   )
