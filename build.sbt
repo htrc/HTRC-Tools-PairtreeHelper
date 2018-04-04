@@ -8,16 +8,12 @@ lazy val commonSettings = Seq(
   organization := "org.hathitrust.htrc",
   organizationName := "HathiTrust Research Center",
   organizationHomepage := Some(url("https://www.hathitrust.org/htrc")),
-  scalaVersion := "2.11.12",
+  scalaVersion := "2.12.5",
   scalacOptions ++= Seq(
     "-feature",
+    "-deprecation",
     "-language:postfixOps",
-    "-language:implicitConversions",
-    "-target:jvm-1.7"
-  ),
-  javacOptions ++= Seq(
-    "-source", "1.7",
-    "-target", "1.7"
+    "-language:implicitConversions"
   ),
   resolvers ++= Seq(
     "I3 Repository" at "http://nexus.htrc.illinois.edu/content/groups/public",
