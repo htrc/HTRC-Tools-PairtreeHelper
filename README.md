@@ -1,45 +1,65 @@
 # HTRC-Tools-PairtreeHelper
-Java tool and library that provides various APIs for managing HT IDs and the Pairtree structure.
+Tool and library that provides various APIs for managing HT IDs and the Pairtree structure.
 
 # Build
 
-`mvn clean package`  
+`sbt "project lib" clean test package` for building the library
+`sbt clean test app/dist` for building the app 
 
-Find the built packages in the `target/` folder.
+Then find the built packages in the following folders:
+- lib/target/scala-2.12/
+- app/target/universal/
 
 # Run
 ```
-Usage: pairtree-helper [options] [command] [command options]
-  Options:
-    -h, -?, -help, --help
-       Show help menu
-       Default: false
-  Commands:
-    clean      Converts unclean ids into clean ids (that can be used as filenames)
-      Usage: clean [options] <list-of-unclean-ids-to-clean>
+pairtree-helper-app 4.0
+HathiTrust Research Center
+  -h, --help      Show help message
+  -v, --version   Show version of this program
 
-    unclean      Converts clean ids back to the original unclean ids
-      Usage: unclean [options] <list-of-clean-ids-to-convert>
+Subcommand: clean - Converts unclean ids into clean ids (that can be used as filenames)
+  -h, --help   Show help message
 
-    clean2pt      Constructs the pairtree path associated with the given HTRC clean ids
-      Usage: clean2pt [options] <list-of-htrc-clean-ids>
+ trailing arguments:
+  unclean-ids (not required)   List of HTRC unclean ids
 
-    clean2root      Constructs the pairtree root folder for the documents associated with the given HTRC clean ids
-      Usage: clean2root [options] <list-of-htrc-clean-ids>
+Subcommand: unclean - Converts clean ids back to the original unclean ids
+  -h, --help   Show help message
 
-    unclean2pt      Constructs the pairtree path associated with the given HTRC (unclean) ids
-      Usage: unclean2pt [options] <list-of-htrc-unclean-ids>
+ trailing arguments:
+  clean-ids (not required)   List of HTRC clean ids
 
-    unclean2root      Constructs the pairtree root folder for the documents associated with the given HTRC (unclean) ids
-      Usage: unclean2root [options] <list-of-htrc-unclean-ids>
+Subcommand: clean2pt - Constructs the pairtree path associated with the given HTRC clean ids
+  -h, --help   Show help message
 
-    parse      Parses a pairtree path and reports the components of the path
-      Usage: parse [options] <pairtree-paths>
-        Options:
-          --header
-             Specifies whether a header is included in the output (useful for
-             CSV readers)
-             Default: true
+ trailing arguments:
+  clean-ids (not required)   List of HTRC clean ids
+
+Subcommand: clean2root - Constructs the pairtree root folder for the documents associated with the given HTRC clean ids
+  -h, --help   Show help message
+
+ trailing arguments:
+  clean-ids (not required)   List of HTRC clean ids
+
+Subcommand: unclean2pt - Constructs the pairtree path associated with the given HTRC (unclean) ids
+  -h, --help   Show help message
+
+ trailing arguments:
+  unclean-ids (not required)   List of HTRC unclean ids
+
+Subcommand: unclean2root - Constructs the pairtree root folder for the documents associated with the given HTRC (unclean) ids
+  -h, --help   Show help message
+
+ trailing arguments:
+  unclean-ids (not required)   List of HTRC unclean ids
+
+Subcommand: parse - Parses a pairtree path and reports the components of the path
+  -h, --header   Specifies whether a header is included in the output (useful
+                 for CSV readers)
+      --help     Show help message
+
+ trailing arguments:
+  paths (not required)   List of pairtree paths
 ```
 
 ## clean vs unclean IDs
@@ -49,182 +69,6 @@ clean IDs are file-friendly derivatives of an unclean ID, where the problematic 
 
 # APIs
 
-To use via Maven:
-```
-<dependency>
-    <groupId>org.hathitrust.htrc</groupId>
-    <artifactId>pairtree-helper</artifactId>
-    <version>3.2-SNAPSHOT</version>
-</dependency>
-```
-
 To use via SBT:  
-`libraryDependencies += "org.hathitrust.htrc" % "pairtree-helper" % "3.2-SNAPSHOT"`
+`libraryDependencies += "org.hathitrust.htrc" % "pairtree-helper" % "4.0"`
 
-## PairtreeHelper API
-```
-/**
- * Parses an HTRC pairtree file path into a {@link PairtreeDocument} that can be used
- * to extract metadata about the document
- *
- * @param filePath The pairtree file path
- * @return The {@link PairtreeDocument}
- * @throws InvalidPairtreePathException Thrown if the given filePath is not a valid pairtree path
- */
-public static PairtreeDocument parse(String filePath) throws InvalidPairtreePathException
-
-/**
- * Parses an HTRC pairtree file into a {@link PairtreeDocument} that can be used
- * to extract metadata about the document
- *
- * @param file The pairtree file
- * @return The {@link PairtreeDocument}
- * @throws IOException Thrown if the canonical path of the given file cannot be resolved
- * @throws InvalidPairtreePathException Thrown if the given filePath is not a valid pairtree path
- */
-public static PairtreeDocument parse(File file) throws IOException, InvalidPairtreePathException
-
-/**
- * Converts an unclean id to a clean id<br>
- * Note: clean ids can be used as valid file or path names, while unclean ids cannot be used for such purposes
- *
- * @param uncleanId The unclean id
- * @return The clean id
- */
-public static String cleanId(String uncleanId)
-
-/**
- * Converts a clean id to an unclean id <br>
- * Note: clean ids can be used as valid file or path names, while unclean ids cannot be used for such purposes
- *
- * @param cleanId The clean id
- * @return The unclean id
- */
-public static String uncleanId(String cleanId)
-
-/**
- * Converts the given HTRC clean id into a {@link PairtreeDocument} that can be used
- * to extract metadata about the document
- *
- * @param htrcCleanId The HTRC clean id
- * @return The {@link PairtreeDocument}
- * @throws InvalidHtrcIdException Thrown if the given id is not a valid HTRC clean id
- */
-public static PairtreeDocument getDocFromCleanId(String htrcCleanId) throws InvalidHtrcIdException
-
-/**
- * Converts the given HTRC unclean id into a {@link PairtreeDocument} that can be used
- * to extract metadata about the document
- *
- * @param htrcUncleanId The HTRC unclean id
- * @return The {@link PairtreeDocument}
- * @throws InvalidHtrcIdException Thrown if the given id is not a valid HTRC unclean id
- */
-public static PairtreeDocument getDocFromUncleanId(String htrcUncleanId) throws InvalidHtrcIdException
-
-```
-
-## PairtreeDocument API
-```
-/**
- * Returns the document path prefix for this pairtree document; for example,
- * a volume with ID mdp.39015063051745 would generate the document path prefix
- * mdp/pairtree_root/39/01/50/63/05/17/45/39015063051745/39015063051745
- * By appending ".zip" or ".mets.xml" to this path you can point to the pairtree volume ZIP
- * or the volume METS metadata file, as desired.
- *
- * @return The document path
- */
-public String getDocumentPathPrefix()
-
-/**
- * Convenience method for retrieving the full document path prefix.
- *
- * @param pairtreeRoot The path to the pairtree root
- * @return The full document path prefix
- */
-public String getDocumentPathPrefix(String pairtreeRoot)
-
-/**
- * Convenience method for quickly getting the path to the ZIP file.
- *
- * @return The relative path to the ZIP file
- */
-public String getZipPath()
-
-/**
- * Convenience method for retrieving the full ZIP volume path prefix.
- *
- * @param pairtreeRoot The path to the pairtree root
- * @return The full ZIP volume path prefix
- */
-public String getZipPath(String pairtreeRoot)
-
-/**
- * Convenience method for quickly getting the path to the METS XML file.
- *
- * @return The relative path to the METS XML file
- */
-public String getMetsPath()
-
-/**
- * Convenience method for retrieving the full METS XML path prefix.
- *
- * @param pairtreeRoot The path to the pairtree root
- * @return The full METS XML path prefix
- */
-public String getMetsPath(String pairtreeRoot)
-
-/**
- * Returns the root folder for the document
- *
- * @return The document folder path
- */
-public String getDocumentRootPath()
-
-/**
- * Convenience method for retrieving the full document root path prefix.
- *
- * @param pairtreeRoot The path to the pairtree root
- * @return The full document root path prefix
- */
-public String getDocumentRootPath(String pairtreeRoot)
-
-/**
- * Returns the library identifier for the source library that provided this document
- *
- * @return The source library id
- */
-public String getLibraryId()
-
-/**
- * Returns the HTRC clean id for this document <br>
- * Note: clean ids can be used as valid file or path names, while unclean ids cannot be used for such purposes
- *
- * @return The HTRC clean id
- */
-public String getCleanId()
-
-/**
- * Returns a clean id without the library identifier prefix
- *
- * @return A clean id without the library identifier prefix
- */
-public String getCleanIdWithoutLibId()
-
-/**
- * Returns the HTRC unclean id for this document <br>
- * Note: clean ids can be used as valid file or path names, while unclean ids cannot be used for such purposes
- *
- * @return The HTRC unclean id
- */
-public String getUncleanId()
-
-/**
- * Returns an unclean id without the library identifier prefix
- *
- * @return An unclean id without the library identifier prefix
- */
-public String getUncleanIdWithoutLibId()
-
-```
