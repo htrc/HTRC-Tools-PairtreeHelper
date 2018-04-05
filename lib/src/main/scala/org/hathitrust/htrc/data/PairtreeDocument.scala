@@ -9,7 +9,7 @@ import scala.util.{Failure, Success, Try}
 import scala.util.matching.Regex
 
 object PairtreeDocument {
-  protected val pairtreeFilePartsRegex: Regex = """([^/]+)/pairtree_root/(.+)/([^/]+)/[^/]+$""".r.unanchored
+  protected val pairtreeFilePartsRegex: Regex = """([^/]+)/pairtree_root/.+/([^/]+)/[^/]+$""".r.unanchored
   protected val pairtree: Pairtree = new Pairtree()
 
   /**
@@ -20,10 +20,10 @@ object PairtreeDocument {
     * @return The `PairtreeDocument` wrapped in a `Try`
     */
   def from(filePath: String): Try[PairtreeDocument] = filePath match {
-    case pairtreeFilePartsRegex(libId, ppath, cleanIdPart) =>
+    case pairtreeFilePartsRegex(libId, cleanIdPart) =>
       val uncleanIdPart = pairtree.uncleanId(cleanIdPart)
       val uncleanId = s"$libId.$uncleanIdPart"
-      Success(PairtreeDocument(HtrcVolumeId(uncleanId), ppath))
+      Success(PairtreeDocument(HtrcVolumeId(uncleanId)))
 
     case _ => Failure(InvalidPairtreePathException(filePath))
   }
@@ -38,7 +38,11 @@ object PairtreeDocument {
   def from(file: File): Try[PairtreeDocument] = Try(file.getCanonicalPath).flatMap(from)
 }
 
-case class PairtreeDocument(volumeId: HtrcVolumeId, ppath: String) {
+case class PairtreeDocument(volumeId: HtrcVolumeId) {
+  import PairtreeDocument._
+
+  protected def ppath: String = pairtree.mapToPPath(volumeId.parts._2)
+
   /**
     * Returns the root folder for the document
     *
@@ -108,4 +112,37 @@ case class PairtreeDocument(volumeId: HtrcVolumeId, ppath: String) {
     * @return The full METS XML path prefix
     */
   def metsPath(pairtreeRoot: String): String = new File(pairtreeRoot, metsPath).toString
+
+  /**
+    * Convenience method for quickly getting the path to the JSON metadata file.
+    *
+    * @return The relative path to the JSON metadata file
+    */
+  def jsonMetadataPath: String = s"$pathPrefix.json"
+
+  /**
+    * Convenience method for retrieving the full JSON metadata path prefix.
+    *
+    * @param pairtreeRoot The path to the JSON metadata root
+    * @return The full JSON metadata path prefix
+    */
+  def jsonMetadataPath(pairtreeRoot: String): String = new File(pairtreeRoot, jsonMetadataPath).toString
+
+  /**
+    * Convenience method for quickly getting the path to the EF file.
+    *
+    * @return The relative path to the EF file
+    */
+  def extractedFeaturesPath: String = {
+    val (libId, cleanIdPart) = volumeId.partsClean
+    s"$libId/pairtree_root/$ppath/$cleanIdPart/$libId.$cleanIdPart.json.bz2"
+  }
+
+  /**
+    * Convenience method for retrieving the full EF path prefix.
+    *
+    * @param pairtreeRoot The path to the pairtree root
+    * @return The full EF path prefix
+    */
+  def extractedFeaturesPath(pairtreeRoot: String): String = new File(pairtreeRoot, extractedFeaturesPath).toString
 }

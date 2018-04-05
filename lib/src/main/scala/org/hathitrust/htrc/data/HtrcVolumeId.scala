@@ -37,8 +37,7 @@ case class HtrcVolumeId(uncleanId: String) {
 
   def libId: String = parts._1
 
-  def toPairtreeDoc: PairtreeDocument =
-    PairtreeDocument(this, pairtree.mapToPPath(parts._2))
+  def toPairtreeDoc: PairtreeDocument = PairtreeDocument(this)
 
   def parts: (String, String) = uncleanId match {
     case idRegex(libId, uncleanIdPart) => libId -> uncleanIdPart
