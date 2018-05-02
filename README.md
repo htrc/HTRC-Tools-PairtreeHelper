@@ -8,7 +8,7 @@ then find the built package in the `target/universal/` folder.
 
 # Run
 ```
-pairtree-helper 4.0
+pairtree-helper 4.1
 HathiTrust Research Center
   -h, --help      Show help message
   -v, --version   Show version of this program
