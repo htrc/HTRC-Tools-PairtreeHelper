@@ -4,7 +4,7 @@ Tool that provides various conversion/introspection options for managing HT IDs 
 # Build
 `sbt dist`
 
-then find the built package in the `target/universal/` folder
+then find the built package in the `target/universal/` folder.
 
 # Run
 ```
