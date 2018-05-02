@@ -1,18 +1,14 @@
 # HTRC-Tools-PairtreeHelper
-Tool and library that provides various APIs for managing HT IDs and the Pairtree structure.
+Tool that provides various conversion/introspection options for managing HT IDs and the Pairtree structure.
 
 # Build
+`sbt dist`
 
-`sbt "project lib" clean test package` for building the library
-`sbt clean test app/dist` for building the app 
-
-Then find the built packages in the following folders:
-- lib/target/scala-2.12/
-- app/target/universal/
+then find the built package in the `target/universal/` folder
 
 # Run
 ```
-pairtree-helper-app 4.0
+pairtree-helper 4.0
 HathiTrust Research Center
   -h, --help      Show help message
   -v, --version   Show version of this program
@@ -66,9 +62,3 @@ Subcommand: parse - Parses a pairtree path and reports the components of the pat
 unclean IDs are the original HT IDs which may contain characters that are not suitable for use in a file name; for example: `uc2.ark:/13960/t4jm2cj7x`
 
 clean IDs are file-friendly derivatives of an unclean ID, where the problematic characters have been replaced according to a (pretty obscure) set of rules, defined in the original [Pairtree Document](https://confluence.ucop.edu/display/Curation/PairTree);  example clean ID: `uc2.ark+=13960=t4jm2cj7x`
-
-# APIs
-
-To use via SBT:  
-`libraryDependencies += "org.hathitrust.htrc" % "pairtree-helper" % "4.0"`
-

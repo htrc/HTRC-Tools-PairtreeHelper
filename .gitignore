@@ -1,6 +1,4 @@
-/.idea/
-*.iml
 /.clover/
+/.idea/
 target/
 /project/project/
-*.class

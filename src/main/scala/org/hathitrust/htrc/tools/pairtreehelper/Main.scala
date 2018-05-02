@@ -2,7 +2,7 @@ package org.hathitrust.htrc.tools.pairtreehelper
 
 import java.io.File
 
-import org.hathitrust.htrc.data.{HtrcVolumeId, PairtreeDocument}
+import org.hathitrust.htrc.data.{HtrcVolumeId, PairtreeVolume}
 import org.rogach.scallop.ScallopOption
 
 import scala.io.StdIn
@@ -69,7 +69,7 @@ object Main {
           Console.println("uncleanId\tcleanId\tlib\tfile")
 
         for (file <- input(conf.parseCmd.paths).map(new File(_))) {
-          PairtreeDocument.from(file) match {
+          PairtreeVolume.from(file) match {
             case Success(doc) =>
               val volumeId = doc.volumeId
               Console.println(s"${volumeId.uncleanId}\t${volumeId.cleanId}\t${volumeId.libId}\t${file.getName}")
