@@ -40,7 +40,7 @@ lazy val `pairtree-helper` = (project in file(".")).
     description := "Tool and library that provides various APIs for managing HT IDs and the Pairtree structure.",
     licenses += "Apache2" -> url("http://www.apache.org/licenses/LICENSE-2.0"),
     libraryDependencies ++= Seq(
-      "org.hathitrust.htrc"           %% "data-model"           % "1.1",
+      "org.hathitrust.htrc"           %% "data-model"           % "1.3.1",
       "org.rogach"                    %% "scallop"              % "3.1.2",
       "org.scalacheck"                %% "scalacheck"           % "1.14.0"      % Test,
       "org.scalatest"                 %% "scalatest"            % "3.0.5"       % Test
